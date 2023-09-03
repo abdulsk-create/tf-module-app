@@ -35,6 +35,7 @@ resource "aws_launch_template" "main" {
   image_id      = data.aws_ami.ami.id
   instance_type = var.instance_type
   vpc_security_group_ids = [aws_security_group.main.id]
+
   user_data = base64encode(templatefile("${path.module}/userdata.sh",
     {
       component = var.component
@@ -48,16 +49,23 @@ resource "aws_launch_template" "main" {
 }
 
 
-#resource "aws_autoscaling_group" "bar" {
-#  availability_zones = ["us-east-1a"]
-#  desired_capacity   = 1
-#  max_size           = 1
-#  min_size           = 1
-#
-#  launch_template {
-#    id      = aws_launch_template.foobar.id
-#    version = "$Latest"
-#  }
-#}
+resource "aws_autoscaling_group" "bar" {
+  name               = "${local.name_prefix}-asg"
+  vpc_identifier     = var.subnet_ids
+  desired_capacity   = var.desired_capacity
+  max_size           = var.max_size
+  min_size           = var.min_size
+
+  launch_template {
+    id      = aws_launch_template.main.id
+    version = "$Latest"
+  }
+  tag {
+    key                 = "Name"
+    value               = local.name_prefix
+    propagate_at_launch = true
+  }
+}
+
 
 
