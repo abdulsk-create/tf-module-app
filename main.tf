@@ -31,10 +31,11 @@ resource "aws_security_group" "main" {
 }
 
 resource "aws_launch_template" "main" {
-  name          = local.name_prefix
-  image_id      = data.aws_ami.ami.id
-  instance_type = var.instance_type
+  name                   = local.name_prefix
+  image_id               = data.aws_ami.ami.id
+  instance_type          = var.instance_type
   vpc_security_group_ids = [aws_security_group.main.id]
+  iam_instance_profile   =
 
   user_data = base64encode(templatefile("${path.module}/userdata.sh",
     {
@@ -189,6 +190,11 @@ resource "aws_iam_role" "main" {
 resource "aws_iam_role_policy_attachment" "attach" {
   role       = aws_iam_role.main.name
   policy_arn = aws_iam_policy.main.arn
+}
+
+resource "aws_iam_instance_profile" "main" {
+  name = "${local.name_prefix}-role"
+  role = aws_iam_role.main.name
 }
 
 
