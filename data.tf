@@ -8,5 +8,5 @@ data "aws_ami" "ami" {
 #28/08/2023
 
 data "dns_a_record_set" "private_alb" {
-  host = var.alb_name
+  host = var.private_alb_name
 }
