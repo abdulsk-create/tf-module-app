@@ -76,6 +76,7 @@ resource "aws_route53_record" "main" {
   records = [ var.component == "frontend" ? var.public_alb_name : var.private_alb_name ]
 }
 
+
 resource "aws_lb_target_group" "main" {
   name     = local.name_prefix
   port     = var.port
