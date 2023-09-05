@@ -70,7 +70,7 @@ resource "aws_autoscaling_group" "main" {
 
 resource "aws_route53_record" "main" {
   zone_id = var.zone_id
-  name    = var.component == "frontend" ? var.env : "${var.component}-${var.env}"
+  name    = var.component == "frontend" ? var.env : "${var.component}.${var.env}"
   type    = "CNAME"
   ttl     = 30
   records = [ var.component == "frontend" ? var.public_alb_name : var.private_alb_name ]
@@ -109,14 +109,14 @@ resource "aws_lb_target_group" "public" {
   vpc_id      = var.default_vpc_id
 }
 
-#resource "aws_lb_target_group_attachment" "public" {
-#  count             = var.component == "frontend" ? length(tolist(data.dns_a_record_set.private_alb.addrs)) : 0
-#  target_group_arn  = aws_lb_target_group.public[0].arn
-#  target_id         = element(tolist(data.dns_a_record_set.private_alb.addrs), count.index)
-#  port              = 80
+resource "aws_lb_target_group_attachment" "public" {
+  count             = var.component == "frontend" ? length(tolist(data.dns_a_record_set.private_alb.addrs)) : 0
+  target_group_arn  = aws_lb_target_group.public[0].arn
+  target_id         = element(tolist(data.dns_a_record_set.private_alb.addrs), count.index)
+  port              = 80
 #  availability_zone = "all"
-#}
-#
+}
+
 #resource "aws_lb_listener_rule" "public" {
 #  count        = var.component == "frontend" ? 1 : 0
 #  listener_arn = var.public_listener
