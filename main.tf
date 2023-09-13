@@ -39,7 +39,7 @@ resource "aws_security_group" "main" {
 
 resource "aws_security_group_rule" "nginx_exporter" {
   count             = var.component == "frontend" ? 1 : 0
-  type              = nginx_exporter
+  type              = "ingress"
   description       = "ngi"
   from_port         = 9113
   to_port           = 9113
