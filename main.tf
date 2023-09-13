@@ -35,19 +35,18 @@ resource "aws_security_group" "main" {
     cidr_blocks      = ["0.0.0.0/0"]
     ipv6_cidr_blocks = ["::/0"]
   }
-
 }
 
-#resource "aws_security_group_rule" "nginx_exporter" {
-#  count             = var.component == "frontend" ? 1 : 0
-#  type              = "nginx_exporter"
-#  description       = "ngi"
-#  from_port         = 9113
-#  to_port           = 9113
-#  protocol          = "tcp"
-#  cidr_blocks       = var.monitoring_ingress_cidr
-#  security_group_id = aws_security_group.main.id
-#}
+resource "aws_security_group_rule" "nginx_exporter" {
+  count             = var.component == "frontend" ? 1 : 0
+  type              = "nginx_exporter"
+  description       = "ngi"
+  from_port         = 9113
+  to_port           = 9113
+  protocol          = "tcp"
+  cidr_blocks       = var.monitoring_ingress_cidr
+  security_group_id = aws_security_group.main.id
+}
 
 resource "aws_launch_template" "main" {
   name                   = local.name_prefix
