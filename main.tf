@@ -63,17 +63,17 @@ resource "aws_launch_template" "main" {
       env       = var.env
     }))
 
-  block_device_mappings {
-    device_name = "/dev/sda1"
-
-    ebs {
-      delete_on_termination = "true"
-      encrypted             = "true"
-      kms_key_id            = var.kms_key_id
-      volume_size           = 10
-      volume_type           = "gp2"
-    }
-  }
+#  block_device_mappings {
+#    device_name = "/dev/sda1"
+#
+#    ebs {
+#      delete_on_termination = "true"
+#      encrypted             = "true"
+#      kms_key_id            = var.kms_key_id
+#      volume_size           = 10
+#      volume_type           = "gp2"
+#    }
+#  }
 
 
   tag_specifications {
@@ -251,10 +251,10 @@ resource "aws_iam_role_policy_attachment" "attach" {
   policy_arn = aws_iam_policy.main.arn
 }
 
-resource "aws_iam_role_policy_attachment" "kms" {
-  role       = aws_iam_role.main.name
-  policy_arn = "arn:aws:iam::219961291665:policy/kms_for_ec2"
-}
+#resource "aws_iam_role_policy_attachment" "kms" {
+#  role       = aws_iam_role.main.name
+#  policy_arn = "arn:aws:iam::219961291665:policy/kms_for_ec2"
+#}
 
 
 
