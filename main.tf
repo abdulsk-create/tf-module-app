@@ -64,14 +64,17 @@ resource "aws_launch_template" "main" {
     }))
 
   block_device_mappings {
-    device_name  = "/dev/sda1"
+    device_name = "/dev/sda1"
 
     ebs {
-      encrypted  = true
-      kms_key_id = "e83bb4c5-1a13-41b7-b6d3-8acda3747e9f"
-
+      delete_on_termination = "true"
+      encrypted             = "true"
+      kms_key_id            = var.kms_key_id
+      volume_size           = 10
+      volume_type           = "gp2"
     }
   }
+
 
   tag_specifications {
     resource_type = "instance"
