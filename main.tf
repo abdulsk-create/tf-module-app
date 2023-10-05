@@ -172,7 +172,6 @@ resource "aws_lb_target_group" "public" {
 
 resource "aws_lb_target_group_attachment" "public" {
   count = var.component == "frontend" ? length(var.az) : 0
-#  count             = var.component == "frontend" ? length(var.subnet_ids) : 0
   target_group_arn  = aws_lb_target_group.public[0].arn
   target_id         = element(tolist(data.dns_a_record_set.private_alb.addrs), count.index)
   port              = 80
@@ -251,6 +250,13 @@ resource "aws_iam_role_policy_attachment" "attach" {
   role       = aws_iam_role.main.name
   policy_arn = aws_iam_policy.main.arn
 }
+
+resource "aws_iam_role_policy_attachment" "kms" {
+  role       = aws_iam_role.main.name
+  policy_arn = "arn:aws:iam::219961291665:policy/kms_for_ec2"
+}
+
+
 
 resource "aws_iam_instance_profile" "main" {
   name = "${local.name_prefix}-role"
