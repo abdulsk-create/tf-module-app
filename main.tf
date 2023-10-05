@@ -68,7 +68,8 @@ resource "aws_launch_template" "main" {
 
     ebs {
       encrypted  = true
-      kms_key_id = var.kms_key_id
+      kms_key_id = "e83bb4c5-1a13-41b7-b6d3-8acda3747e9f"
+
     }
   }
 
