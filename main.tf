@@ -190,7 +190,7 @@ resource "aws_lb_listener_rule" "public" {
 
   condition {
     host_header {
-      values = [ "${var.env}.entertanova.com" ]
+      values = [ "${var.env == "prod" ? "www" : var.env}.entertanova.com" ]
     }
   }
 }
