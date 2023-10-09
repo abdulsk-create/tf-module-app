@@ -145,7 +145,7 @@ resource "aws_lb_listener_rule" "main" {
 
   condition {
     host_header {
-      values = [ var.component == "frontend" ? "${var.env}.entertanova.com" : "${var.component}-${var.env}.entertanova.com" ]
+      values = [ var.component == "frontend" ? "${var.env == "prod" ? "www" : var.env}.entertanova.com" : "${var.component}-${var.env}.entertanova.com" ]
     }
   }
 }
