@@ -7,7 +7,7 @@
 
 data "aws_ami" "ami" {
   most_recent      = true
-  name_regex       = "roboshop-v2"
+  name_regex       = "roboshop-ami-v2"
   owners           = ["219961291665"]
 }
 
